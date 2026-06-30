@@ -186,5 +186,18 @@ footer b{color:#6b7078;}
 <div class="sticky sans"><a href="https://directmeds.com/dm-directmax/index-stv.php?oid=17&uid=89&affid=127&source_id=5819&sub1=&sub2=&sub3=&sub4=48&sub5=458e9a18a6a44026b9f311659b752bb6&domain1=www.dp9mgd4trk.com&network_id=3681&creative_id=66">See If You Qualify &rarr;</a></div>
 <div class="spacer"></div>
 
+<script>
+/* RedTrack click-through: if a clickid is present in the URL, route every CTA
+   through the RedTrack hop so the click is tracked all the way to the offer.
+   No clickid (direct/organic visit) -> CTAs fall back to the offer link. */
+(function(){
+  var cid = new URLSearchParams(window.location.search).get('clickid');
+  if(!cid) return;
+  var hop = 'https://track.vitalroutehealth.com/click?clickid=' + encodeURIComponent(cid);
+  var links = document.querySelectorAll('a.cta, .sticky a');
+  for(var i=0;i<links.length;i++){ links[i].setAttribute('href', hop); }
+})();
+</script>
+
 </body>
 </html>
