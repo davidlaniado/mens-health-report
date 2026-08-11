@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
+  html { background:#cfd6db; } body { font-family:-apple-system, "SF Pro Display", "Helvetica Neue", sans-serif; background:#e7eaec; color:#1c2733; max-width:390px; margin:0 auto; min-height:100vh; box-shadow:0 0 40px rgba(0,0,0,0.15); }
+  .mono { font-family:"SF Mono", ui-monospace, Menlo, monospace; letter-spacing:-0.3px; }
+
+  .timer { background:#1c2733; color:#fff; text-align:center; font-size:13px; font-weight:600; padding:10px; }
+  .timer b { color:#f7e06e; text-decoration:underline; }
+
+  header { background:#fff; display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:3px solid #4a90d9; }
+  .logo { font-weight:800; font-size:20px; letter-spacing:-0.5px; }
+  .tp { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:700; }
+  .stars { display:inline-flex; gap:1px; }
+  .star { width:14px; height:14px; background:#00b67a; color:#fff; font-size:10px; display:flex; align-items:center; justify-content:center; }
+
+  .wrap { padding:18px 16px 26px; }
+
+  .stepline { text-align:center; font-size:12px; font-weight:700; color:#5b6b7a; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;}
+  .progress { height:6px; background:#cfd6db; border-radius:3px; margin:0 40px 22px; overflow:hidden; }
+  .progress i { display:block; height:100%; width:92%; background:#4a90d9; border-radius:3px; }
+
+  h1 { font-size:26px; line-height:1.2; text-align:center; font-weight:800; letter-spacing:-0.5px; margin-bottom:6px; }
+  .sub { text-align:center; font-size:14px; color:#5b6b7a; margin-bottom:16px; }
+  .sub b { color:#4a90d9; }
+
+  .cards { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; }
+  .card { background:#fff; border:2px solid #1c2733; border-radius:999px; padding:16px 20px; display:flex; align-items:center; gap:12px; font-size:16px; font-weight:600; position:relative; }
+  .card .ic { font-size:18px; }
+  .card.sel { background:#1c2733; color:#fff; padding-right:52px; }
+  .card.sel .check { position:absolute; right:18px; width:22px; height:22px; border-radius:50%; background:#3ec98e; color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; }
+  .card .note { font-size:12px; font-weight:600; color:#5b6b7a; margin-left:auto; margin-right:6px;}
+  .card.sel .note { color:#a9c3d8; }
+  .rec { position:absolute; top:-10px; right:16px; background:#4a90d9; color:#fff; font-size:10px; font-weight:800; letter-spacing:0.5px; padding:3px 10px; border-radius:999px; text-transform:uppercase; }
+  .save { position:absolute; top:-10px; right:16px; background:#3ec98e; color:#fff; font-size:10px; font-weight:800; letter-spacing:0.5px; padding:3px 10px; border-radius:999px; text-transform:uppercase; }
+
+  .summary { background:#fff; border-radius:18px; padding:18px 18px; margin-bottom:28px; }
+  .summary .row { display:flex; justify-content:space-between; font-size:14px; padding:7px 0; color:#3c4b59; }
+  .summary .row .free { background:#dff5ea; color:#189a67; font-size:11px; font-weight:800; padding:2px 8px; border-radius:6px; margin-left:8px;}
+  .summary .row s { color:#9aa7b1; margin-right:6px; }
+  .summary .total { border-top:1.5px solid #e7eaec; margin-top:8px; padding-top:12px; display:flex; justify-content:space-between; align-items:center; font-size:17px; font-weight:800; }
+  .summary .total .pill { background:#dff5ea; color:#189a67; font-size:12px; font-weight:800; padding:3px 10px; border-radius:999px; }
+
+  h2 { font-size:20px; font-weight:800; letter-spacing:-0.3px; margin:0 0 12px; text-align:center;}
+  .field { background:#fff; border-radius:14px; padding:10px 16px; margin-bottom:10px; }
+  .field label { display:block; font-size:11px; color:#8a97a1; font-weight:600; }
+  .field span { font-size:15px; color:#9aa7b1; }
+  .grid2 { display:flex; gap:10px; } .grid2 .field { flex:1; }
+  .hipaa { text-align:center; font-size:12px; color:#3c4b59; margin:14px 0 22px; font-weight:600;}
+  .paylogos { display:flex; justify-content:center; gap:6px; margin-bottom:12px; font-size:11px; font-weight:800; }
+  .paylogos span { background:#fff; border-radius:4px; padding:3px 8px; color:#3c4b59; border:1px solid #d5dbe0;}
+
+  .checkout { display:block; width:100%; background:#22b573; color:#fff; border:none; border-radius:999px; padding:20px; font-size:20px; font-weight:800; letter-spacing:0.3px; text-align:center; box-shadow:0 6px 18px rgba(34,181,115,0.35); margin-top:8px;}
+  .checkout small { display:block; font-size:12px; font-weight:600; opacity:0.9; margin-top:2px;}
+  .guarantee { text-align:center; font-size:12px; color:#5b6b7a; margin-top:12px; font-weight:600;}
+</style>
+</head>
+<body>
+
+<div class="timer">Your plan is approved for: <b>14:55</b></div>
+<header>
+  <div class="logo">&#9879; DirectMeds</div>
+  <div class="tp">Excellent 4.6
+    <span class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="stepline">Your Treatment Plan</div>
+  <div class="progress"><i style="width:88%"></i></div>
+
+<h1>How many uses per month?</h1>
+  <p class="sub">Most men your age pick 10</p>
+  <div class="cards mono">
+    <div class="card sel">6 uses per month <span class="check">✓</span></div>
+    <div class="card">10 uses per month</div>
+    <div class="card">20 uses per month</div>
+  </div>
+
+  <button onclick="location.href='plan.html'" class="checkout" style="background:#1c2733; box-shadow:0 6px 18px rgba(28,39,51,0.3); color:#a9c3d8;">Continue &#8594;<small style="color:#8fa8bd">2 quick steps left</small></button>
+  <div class="guarantee">250,000+ happy customers &middot; Excellent 4.6 on Trustpilot</div>
+</div>
+
+<script>
+document.querySelectorAll('.cards').forEach(function(group){
+  group.querySelectorAll('.card').forEach(function(card){
+    card.style.cursor='pointer';
+    card.addEventListener('click', function(){
+      group.querySelectorAll('.card').forEach(function(c){
+        c.classList.remove('sel');
+        var ch=c.querySelector('.check'); if(ch) ch.remove();
+      });
+      card.classList.add('sel');
+      var ck=document.createElement('span'); ck.className='check'; ck.textContent='\u2713';
+      card.appendChild(ck);
+    });
+  });
+});
+</script>
+</body>
+</html>
